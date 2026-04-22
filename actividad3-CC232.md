@@ -3,6 +3,6 @@
 ## Integrantes
 
 - Marco Antonio Huamani Bonifacio - 20232741D
-- Alessi Cabello - 2024
+- Yaimar Alexis Cabello Quevedo - 2024
 
 ## Bloque 1
