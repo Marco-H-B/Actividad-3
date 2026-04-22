@@ -11,3 +11,6 @@
 
 2. Acceso por rango es ir po índice directo (como arreglo). Acceso por posición o enlace es ir nodo por nodo (como lista enlazada).
 
+3. En lista enlazada insertar o borrar localmente es barato porque solo reajustas enlaces cercanos. Lo caro es llegar al índice, porque hay que recorrer.
+
+4. SLList
