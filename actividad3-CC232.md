@@ -21,7 +21,9 @@
 
 7. En DLList, getNode(i) arranca por el lado más cercano (inicio o final). Por eso la búsqueda cuesta O(min(i, n-i)) y luego actualizar enlaces en add/remove/set es O(1).
 
------------
+8. La idea espacial de SEList es guardar elementos en bloques (no un nodo por elemento), para reducir sobrecarga de punteros y mantener buen equilibrio entre acceso y actualización local.
+
+
 
 ## Bloque 2: Demos y lo que se observa al correr el código
 
