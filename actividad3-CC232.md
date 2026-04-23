@@ -90,6 +90,24 @@
 11. `spread()` y `gather()` son los que mantienen el equilibrio. Si un bloque se llena, repartes los datos; si varios están casi vacíos, los juntas para no desperdiciar espacio.
 12. El valor de `b` (el tamaño del bloque) es lo que decide si la lista se parece más a un arreglo rápido para leer o a una lista fácil de editar.
 
+## Bloque 5: Adaptadores de estructuras enlazadas
+
+1. LinkedStack reutiliza SLList delegando push, pop y top; no reimplementa nodos ni lógica de recorrido.
+
+2. LinkedQueue también reutiliza SLList: add mete al final, remove saca del frente, front mira la cabeza.
+
+3. LinkedDeque se apoya naturalmente en DLList porque necesita operar en ambos extremos de forma simétrica y eficiente.
+
+4. En MinStack cada entrada guarda valor y mínimo acumulado para responder min en O(1) sin recorrer.
+
+5. MinQueue usa dos MinStack: uno de entrada y otro de salida; al transferir cuando toca conserva FIFO y mantiene min global combinando ambos mínimos.
+
+6. En MinDeque, el rebalanceo evita quedarse con toda la carga en un solo lado; así front/back/remove no se rompen cuando un stack queda vacío.
+
+7. Implementar estructura es construir nodos, enlaces e invariantes desde cero; adaptar estructura es envolver una ya hecha para exponer otra interfaz (ejemplo: LinkedStack sobre SLList).
+
+8. Constantes defendibles: operaciones base de LinkedStack/LinkedQueue y extremos de LinkedDeque. Amortizadas: operaciones de MinQueue con transferencias y operaciones de MinDeque cuando entra rebalanceo completo.
+
 ## Bloque 6: El refuerzo de Deng y el puente de integración
 
 1. La `DengList` nos da funciones que no solemos ver en una lista básica, como ordenamiento estable o limpieza de duplicados en una sola línea.
