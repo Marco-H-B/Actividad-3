@@ -7,25 +7,25 @@
 
 ## Bloque 1: Preguntas de reflexión
 
-1. Cuando la estructura pasa de contigua a dinámica, cambia la forma de como se guardan los datos: en contigua todo vive en la memoria, en dinámica cada nodo puede quedar en posiciones separadas y se conecta por punteros.
+1. Cuando una estructura pasa de contigua a dinámica, te cambia el "mapa mental". En contigua los datos están pegados en memoria; en dinámica cada nodo puede vivir en otra zona y se conecta con punteros.
 
-2. Acceso por rango es ir por índice directo (como arreglo). Acceso por posición o enlace es ir nodo por nodo (como lista enlazada).
+2. Acceso por rango es pedir directo el índice (tipo arreglo: `A[i]`). Acceso por posición o enlace es avanzar nodo por nodo desde `head` hasta llegar.
 
-3. En lista enlazada insertar o borrar localmente es barato porque solo reajustas enlaces cercanos. Lo caro es llegar al índice, porque hay que recorrer.
+3. En lista enlazada, insertar o borrar localmente es barato porque solo reconectas unos pocos enlaces. Lo caro es llegar al punto donde quieres operar, porque hay recorrido.
 
-4. SLList calza bien para Stack y Queue porque tiene cabeza y cola: push/pop en cabeza y add al final + remove al inicio funcionan en tiempo constante.
+4. `SLList` calza muy bien para `Stack` y `Queue`: `push/pop` en cabeza, `add` al final y `remove` al inicio se pueden defender en O(1).
 
-5. SLList no da un Deque completo con el mismo costo porque no tiene puntero hacia atrás; quitar por el final, por ejemplo, obliga a buscar el penúltimo.
+5. `SLList` no implementa un `Deque` completo con el mismo costo porque no hay puntero hacia atrás. Si quieres quitar por el final, toca buscar el penúltimo.
 
-6. El nodo dummy en DLList evita casos borde (lista vacía, primer nodo, último nodo). Todo se trata como inserción/eliminación entre nodos.
+6. El nodo centinela `dummy` en `DLList` te simplifica la vida: reduce casos borde (vacía, primero, último) y todo se vuelve "conectar/desconectar entre nodos".
 
-7. En DLList, getNode(i) arranca por el lado más cercano (inicio o final). Por eso la búsqueda cuesta O(min(i, n-i)) y luego actualizar enlaces en add/remove/set es O(1).
+7. En `DLList`, `getNode(i)` empieza por el lado más cercano (inicio o final), por eso buscar cuesta O(min(i, n-i)). Luego, `set/add/remove` ajustan enlaces locales en O(1).
 
-8. La idea espacial de SEList es guardar elementos en bloques (no un nodo por elemento), para reducir sobrecarga de punteros y mantener buen equilibrio entre acceso y actualización local.
+8. La idea espacial de `SEList` es agrupar elementos en bloques, en vez de un nodo por elemento. Así reduces sobrecarga de punteros y mejoras equilibrio entre acceso y actualización local.
 
-9. SEList usa un bloque tipo deque contiguo porque dentro de cada bloque conviene mover elementos con costo local bajo y buen uso de caché.
+9. `SEList` usa un bloque deque contiguo (`BDeque`/`ArrayDeque`) porque dentro del bloque mover y leer datos es más eficiente para caché y tiene costo local bajo.
 
-10. DengList en esta semana funciona como refuerzo algorítmico (sort, dedup, reverse sobre interfaz de lista), pero no reemplaza a las estructuras de Morin porque esas son la base estructural y de complejidad por punteros.
+10. `DengList` en esta semana funciona como refuerzo algorítmico (`sort`, `dedup`, `reverse`) sobre interfaz de lista. No reemplaza a Morin: Morin sigue siendo la base estructural y de invariantes por punteros.
 
 ## Bloque 2: Demos y lo que se observa al correr el código
 
@@ -55,25 +55,32 @@
 
 ## Bloque 3: El código de las estructuras
 
-1. Para SLList, la pública valida add al final, push al inicio, pop, remove al inicio, peek y size.
+1. Para `SLList`, la prueba pública valida el flujo básico real: `add` al final, `push` al inicio, `peek`, `pop`, `remove` al frente y `size` consistente después de operar.
 
-2. Para DLList, valida add por índice en posiciones distintas, get por índice, remove(i) y mantenimiento de tamaño.
+2. Para `DLList`, se valida inserción por índice (incluida posición intermedia), lectura con `get`, borrado con `remove(i)` y mantenimiento correcto de tamaño.
 
-3. Para SEList, valida add(i,x), get(i), set(i,x), remove(i) y size en una lista por bloques.
+3. Para `SEList`, se comprueba el ciclo completo de uso: `add(i,x)`, `get(i)`, `set(i,x)` (devolviendo valor anterior), `remove(i)` y `size` en una lista por bloques.
 
-4. test_public_extras amplía con secondLast, reverse y checkSize en SLList; rotate, isPalindrome y checkSize en DLList; además MinStack, MinQueue, MinDeque y XorList.
+4. `test_public_extras.cpp` amplía cobertura con métodos del curso: en `SLList` prueba `secondLast`, `reverse`, `checkSize`; en `DLList` prueba `rotate`, `isPalindrome`, `checkSize`; y también valida `MinStack`, `MinQueue`, `MinDeque` y `XorList`.
 
-5. test_public_linked_adapters valida semántica de adaptadores: LIFO en LinkedStack, FIFO en LinkedQueue y doble extremo coherente en LinkedDeque.
+5. `test_public_linked_adapters.cpp` verifica semántica de verdad: LIFO para `LinkedStack`, FIFO para `LinkedQueue` y coherencia en ambos extremos para `LinkedDeque`.
 
-6. test_public_deng_bridge demuestra integración real: estructuras de Morin se convierten, se aplican algoritmos Deng y se reescribe de vuelta el resultado.
+6. `test_public_deng_bridge.cpp` demuestra integración real y reutilización: aplica `stable_sort_with_deng`, `dedup_with_deng` y `reverse_with_deng` sobre `DLList` y `SEList` sin reescribir esas estructuras.
 
-7. stress_selist_week3 estresa crecimiento grande, borrado repetido al frente y reinserciones, verificando que el tamaño lógico final se mantenga correcto.
+7. `stress_selist_week3.cpp` mete carga concreta: inserta 500 elementos, elimina 250 veces por el frente, reinserta 100, y al final exige `size == 350`.
 
-8. Una prueba pública sí demuestra que, para casos representativos, la API se comporta como debe (valores, orden, tamaño, operaciones básicas).
+8. Lo que SÍ demuestra una prueba pública: en escenarios representativos, la API devuelve valores correctos, mantiene orden esperado y conserva tamaño consistente.
 
-9. Una prueba pública sola no demuestra complejidad asintótica, ausencia total de bugs, ni correctitud formal de invariantes internos.
+9. Lo que NO demuestra por sí sola: complejidad asintótica formal, ausencia total de bugs, ni correctitud absoluta de invariantes internos para todos los casos posibles.
 
-10. Pasar pruebas no reemplaza explicar invariantes y punteros porque las pruebas cubren muestras finitas; la defensa pide por qué funciona siempre y con qué costo.
+10. Por eso pasar pruebas ayuda mucho, pero no reemplaza la defensa teórica: igual hay que explicar punteros, invariantes y costos.
+
+### Cuadro rápido: cómo interpretar pruebas
+
+| Si pasa esto... | Puedes defender... | Pero aún debes justificar... |
+| --------------- | ------------------ | ---------------------------- |
+| Pruebas públicas | Correctitud en casos representativos | Invariantes generales y complejidades |
+| Stress específico | Robustez en ese patrón de carga | Otros patrones y casos extremos |
 
 ## Bloque 4: Entendiendo el código a fondo
 
@@ -92,21 +99,31 @@
 
 ## Bloque 5: Adaptadores de estructuras enlazadas
 
-1. LinkedStack reutiliza SLList delegando push, pop y top; no reimplementa nodos ni lógica de recorrido.
+1. `LinkedStack` reutiliza `SLList` directo: `push -> list.push`, `pop -> list.pop`, `top -> list.peek`. O sea, es un adaptador LIFO sin rehacer nodos.
 
-2. LinkedQueue también reutiliza SLList: add mete al final, remove saca del frente, front mira la cabeza.
+2. `LinkedQueue` también recicla `SLList`: `add` entra por cola (`list.add`), `remove` sale por frente (`list.remove`) y `front` mira la cabeza (`peek`).
 
-3. LinkedDeque se apoya naturalmente en DLList porque necesita operar en ambos extremos de forma simétrica y eficiente.
+3. `LinkedDeque` se monta naturalmente sobre `DLList` porque necesita dos extremos fuertes. Con doble enlace haces `add/remove` por ambos lados sin recorrer toda la estructura.
 
-4. En MinStack cada entrada guarda valor y mínimo acumulado para responder min en O(1) sin recorrer.
+4. En `MinStack`, cada entrada guarda `value` y `current_min`. Por eso `min()` sale al toque en O(1), sin buscar elemento por elemento.
 
-5. MinQueue usa dos MinStack: uno de entrada y otro de salida; al transferir cuando toca conserva FIFO y mantiene min global combinando ambos mínimos.
+5. `MinQueue` usa dos `MinStack` (`in_` y `out_`): conserva FIFO al transferir cuando hace falta, y `min()` se obtiene comparando los mínimos de ambos stacks.
 
-6. En MinDeque, el rebalanceo evita quedarse con toda la carga en un solo lado; así front/back/remove no se rompen cuando un stack queda vacío.
+6. En `MinDeque`, el rebalanceo entre `front_` y `back_` evita que un lado quede vacío permanentemente; así `front/back/remove` siguen funcionando de forma estable.
 
-7. Implementar estructura es construir nodos, enlaces e invariantes desde cero; adaptar estructura es envolver una ya hecha para exponer otra interfaz (ejemplo: LinkedStack sobre SLList).
+7. Diferencia clave: implementar estructura = crear nodos, enlaces e invariantes desde cero; adaptar estructura = envolver una ya hecha para exponer otra interfaz (ejemplo: `LinkedStack` sobre `SLList`).
 
-8. Constantes defendibles: operaciones base de LinkedStack/LinkedQueue y extremos de LinkedDeque. Amortizadas: operaciones de MinQueue con transferencias y operaciones de MinDeque cuando entra rebalanceo completo.
+8. Costos defendibles: en `LinkedStack`, `LinkedQueue` y extremos de `LinkedDeque`, operaciones base O(1). En `MinQueue` y `MinDeque`, varias operaciones se defienden como O(1) amortizado por transferencias/rebalanceos puntuales.
+
+### Mapa rápido de costos
+
+| Estructura | Operaciones más defendibles | Idea corta |
+| ---------- | --------------------------- | ---------- |
+| `LinkedStack` | `push`, `pop`, `top` en O(1) | Todo sucede en la cabeza de `SLList` |
+| `LinkedQueue` | `add`, `remove`, `front` en O(1) | Cola al final, salida al frente |
+| `LinkedDeque` | `add/remove` en extremos O(1) | Doble enlace de `DLList` |
+| `MinQueue` | `add/remove/front/min` O(1) amortizado | Transferencia masiva ocasional |
+| `MinDeque` | `front/back/remove` O(1) amortizado | Rebalanceo puede costar O(n) puntualmente |
 
 ## Bloque 6: El refuerzo de Deng y el puente de integración
 
@@ -118,21 +135,31 @@
 6. El ejemplo de `reverse_with_deng` deja claro que no importa cómo guardes los datos por debajo, si tienes una interfaz común, el algoritmo para invertir sirve igual.
 7. Mover los datos entre estructuras cuesta O(n), pero te lo ahorras en tiempo de desarrollo y en evitar errores si la operación que vas a hacer es compleja.
 
-## Bloque 7: El estrés de la SEList
+## Bloque 7: Comparación enlazado vs contiguo (con evidencia)
 
-1. ArrayDeque usa representación contigua circular; LinkedDeque usa nodos doblemente enlazados. En costo observable, ArrayDeque destaca en acceso por índice; LinkedDeque destaca en operaciones locales en extremos sin mover bloques de datos.
+1. `ArrayDeque` usa representación contigua circular; `LinkedDeque` usa nodos doblemente enlazados. En la práctica, `ArrayDeque` suele lucir más en acceso por índice, mientras `LinkedDeque` brilla en operaciones de extremos sin desplazar bloques.
 
-2. Mejor localidad de memoria significa que los elementos cercanos también están físicamente cerca, y eso favorece la caché del procesador.
+2. Decir que una estructura tiene mejor localidad de memoria significa que sus datos cercanos también están cerca físicamente. Eso ayuda mucho a la caché del procesador y acelera recorridos.
 
-3. La representación enlazada favorece inserciones y eliminaciones locales, sobre todo cuando ya estás parado en la zona a modificar.
+3. La representación enlazada favorece inserciones y eliminaciones locales, sobre todo cuando ya llegaste al nodo donde toca editar.
 
-4. En el benchmark, random_get_arraydeque vs random_get_dllist sirve para discutir acceso aleatorio; deque_contiguo_arraydeque vs deque_enlazado_linkeddeque (o la comparación de colas) sirve para discutir extremos.
+4. En el benchmark, `random_get_arraydeque` vs `random_get_dllist` es la comparación más clara para acceso aleatorio. Para operaciones en extremos, sirven `deque_contiguo_arraydeque` vs `deque_enlazado_linkeddeque` (y también `queue_contigua_sobre_arraydeque` vs `queue_enlazada_linkedqueue`).
 
-5. El benchmark no es prueba absoluta porque depende de máquina, compilador, tamaño de entrada, patrón de uso y constantes ocultas.
+5. El benchmark no es una verdad absoluta: depende de máquina, compilador, optimizaciones, tamaño de entrada y patrón exacto de uso.
 
-6. XorList muestra que puedes ahorrar memoria de punteros guardando una sola combinación XOR de prev y next.
+6. `XorList` muestra una idea interesante de ahorro de espacio: en vez de guardar `prev` y `next` por separado, guarda un solo enlace combinado con XOR.
 
-7. La desventaja práctica de XorList es fuerte: depuración más difícil, código menos mantenible y manipulación de punteros más delicada.
+7. La desventaja práctica de `XorList` es fuerte: más difícil de depurar, menos amigable para mantenimiento y más delicada al manipular punteros.
+
+### Cuadro comparativo rápido
+
+| Punto | Contigua (`ArrayDeque`) | Enlazada (`LinkedDeque`/`DLList`) |
+| ----- | ----------------------- | --------------------------------- |
+| Representación | Datos juntos en memoria | Nodos dispersos conectados |
+| Acceso por índice | Generalmente más rápido | Más costoso (hay recorrido) |
+| Inserción/eliminación local | Puede mover elementos | Ajusta enlaces locales |
+| Cache | Mejor localidad | Peor localidad en general |
+| Flexibilidad estructural | Menor | Mayor |
 
 ## Bloque 8: Conclusiones para la sustentación
 
