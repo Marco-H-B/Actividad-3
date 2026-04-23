@@ -5,7 +5,7 @@
 - Marco Antonio Huamani Bonifacio - 20232741D
 - Yaimar Alexis Cabello Quevedo - 2024
 
-## Bloque 1
+## Bloque 1: Preguntas de reflexión
 
 1. Cuando la estructura pasa de contigua a dinámica, cambia la forma de como se guardan los datos: en contigua todo vive en la memoria, en dinámica cada nodo puede quedar en posiciones separadas y se conecta por punteros.
 
@@ -52,6 +52,28 @@
 6. La diferencia clave en la demo de estructuras `Min` es que no ves un bucle buscando el menor; la respuesta es inmediata porque el mínimo ya estaba calculado de antes.
 7. El adaptador de `LinkedQueue` es el ejemplo más claro: solo le pide a la `SLList` que haga el trabajo sucio por detrás, dándonos una interfaz limpia de cola.
 8. Al comparar ambas representaciones, la demo deja claro que la memoria caché ama los arreglos para leer, pero las listas son mejores para editar el contenido sin desplazar memoria.
+
+## Bloque 3: El código de las estructuras
+
+1. Para SLList, la pública valida add al final, push al inicio, pop, remove al inicio, peek y size.
+
+2. Para DLList, valida add por índice en posiciones distintas, get por índice, remove(i) y mantenimiento de tamaño.
+
+3. Para SEList, valida add(i,x), get(i), set(i,x), remove(i) y size en una lista por bloques.
+
+4. test_public_extras amplía con secondLast, reverse y checkSize en SLList; rotate, isPalindrome y checkSize en DLList; además MinStack, MinQueue, MinDeque y XorList.
+
+5. test_public_linked_adapters valida semántica de adaptadores: LIFO en LinkedStack, FIFO en LinkedQueue y doble extremo coherente en LinkedDeque.
+
+6. test_public_deng_bridge demuestra integración real: estructuras de Morin se convierten, se aplican algoritmos Deng y se reescribe de vuelta el resultado.
+
+7. stress_selist_week3 estresa crecimiento grande, borrado repetido al frente y reinserciones, verificando que el tamaño lógico final se mantenga correcto.
+
+8. Una prueba pública sí demuestra que, para casos representativos, la API se comporta como debe (valores, orden, tamaño, operaciones básicas).
+
+9. Una prueba pública sola no demuestra complejidad asintótica, ausencia total de bugs, ni correctitud formal de invariantes internos.
+
+10. Pasar pruebas no reemplaza explicar invariantes y punteros porque las pruebas cubren muestras finitas; la defensa pide por qué funciona siempre y con qué costo.
 
 ## Bloque 4: Entendiendo el código a fondo
 
