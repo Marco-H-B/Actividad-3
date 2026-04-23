@@ -25,7 +25,7 @@
 
 9. SEList usa un bloque tipo deque contiguo porque dentro de cada bloque conviene mover elementos con costo local bajo y buen uso de caché.
 
-
+10. DengList en esta semana funciona como refuerzo algorítmico (sort, dedup, reverse sobre interfaz de lista), pero no reemplaza a las estructuras de Morin porque esas son la base estructural y de complejidad por punteros.
 
 ## Bloque 2: Demos y lo que se observa al correr el código
 
