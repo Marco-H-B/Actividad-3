@@ -118,6 +118,22 @@
 6. El ejemplo de `reverse_with_deng` deja claro que no importa cómo guardes los datos por debajo, si tienes una interfaz común, el algoritmo para invertir sirve igual.
 7. Mover los datos entre estructuras cuesta O(n), pero te lo ahorras en tiempo de desarrollo y en evitar errores si la operación que vas a hacer es compleja.
 
+## Bloque 7: El estrés de la SEList
+
+1. ArrayDeque usa representación contigua circular; LinkedDeque usa nodos doblemente enlazados. En costo observable, ArrayDeque destaca en acceso por índice; LinkedDeque destaca en operaciones locales en extremos sin mover bloques de datos.
+
+2. Mejor localidad de memoria significa que los elementos cercanos también están físicamente cerca, y eso favorece la caché del procesador.
+
+3. La representación enlazada favorece inserciones y eliminaciones locales, sobre todo cuando ya estás parado en la zona a modificar.
+
+4. En el benchmark, random_get_arraydeque vs random_get_dllist sirve para discutir acceso aleatorio; deque_contiguo_arraydeque vs deque_enlazado_linkeddeque (o la comparación de colas) sirve para discutir extremos.
+
+5. El benchmark no es prueba absoluta porque depende de máquina, compilador, tamaño de entrada, patrón de uso y constantes ocultas.
+
+6. XorList muestra que puedes ahorrar memoria de punteros guardando una sola combinación XOR de prev y next.
+
+7. La desventaja práctica de XorList es fuerte: depuración más difícil, código menos mantenible y manipulación de punteros más delicada.
+
 ## Bloque 8: Conclusiones para la sustentación
 
 Pasar de usar arreglos dinámicos a trabajar con estructuras enlazadas nos cambia el chip sobre cómo se maneja la memoria. En un arreglo todo está pegado (contiguo), pero aquí pasamos a una **representación** de nodos dispersos conectados por punteros. Esto significa que el **acceso por rango** (querer el elemento 50 al instante) ya no existe; ahora tenemos un **acceso por posición** donde hay que seguir el camino de enlaces.
