@@ -23,6 +23,8 @@
 
 8. La idea espacial de SEList es guardar elementos en bloques (no un nodo por elemento), para reducir sobrecarga de punteros y mantener buen equilibrio entre acceso y actualización local.
 
+9. SEList usa un bloque tipo deque contiguo porque dentro de cada bloque conviene mover elementos con costo local bajo y buen uso de caché.
+
 
 
 ## Bloque 2: Demos y lo que se observa al correr el código
