@@ -13,7 +13,13 @@
 
 3. En lista enlazada insertar o borrar localmente es barato porque solo reajustas enlaces cercanos. Lo caro es llegar al índice, porque hay que recorrer.
 
-4. SLList
+4. SLList calza bien para Stack y Queue porque tiene cabeza y cola: push/pop en cabeza y add al final + remove al inicio funcionan en tiempo constante.
+
+5. SLList no da un Deque completo con el mismo costo porque no tiene puntero hacia atrás; quitar por el final, por ejemplo, obliga a buscar el penúltimo.
+
+6. El nodo dummy en DLList evita casos borde (lista vacía, primer nodo, último nodo). Todo se trata como inserción/eliminación entre nodos.
+
+7. En DLList, getNode(i) arranca por el lado más cercano (inicio o final). Por eso la búsqueda cuesta O(min(i, n-i)) y luego actualizar enlaces en add/remove/set es O(1).
 
 -----------
 
