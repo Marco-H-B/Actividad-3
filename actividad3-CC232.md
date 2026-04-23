@@ -22,7 +22,7 @@
 ### Tabla de seguimiento de demos
 
 | Archivo | Lo que salta a la vista | El "truco" detrás de la estructura | Por qué se diseñó así (Costo/Espacio) |
-|---|---|---|---|
+| ------- | ----------------------- | ---------------------------------- | ------------------------------------- |
 | `demo_sllist.cpp` | Cómo se van intercalando `push` y `add`. | Usa una `SLList` básica que maneja `head` y `tail` para ser flexible. | Es eficiente (O(1)) si solo tocas las puntas, pero buscar algo al medio te hace perder tiempo. |
 | `demo_dllist.cpp` | Al meter un dato al medio, el cambio es instantáneo. | Los nodos tienen flechas para ambos lados (`prev` y `next`), así que no hay que reacomodar todo. | Insertar es O(1) una vez que llegas al sitio. El centinela `dummy` simplifica mucho el código. |
 | `demo_selist.cpp` | La lista se ve ordenada aunque por dentro use bloques. | Es un híbrido: guarda los datos en pedazos de arreglos (`BDeque`) que están enlazados. | Buscas más rápido que en una lista normal (aprox O(N/B)) y no desperdicias tanta memoria. |
@@ -43,8 +43,6 @@
 7. El adaptador de `LinkedQueue` es el ejemplo más claro: solo le pide a la `SLList` que haga el trabajo sucio por detrás, dándonos una interfaz limpia de cola.
 8. Al comparar ambas representaciones, la demo deja claro que la memoria caché ama los arreglos para leer, pero las listas son mejores para editar el contenido sin desplazar memoria.
 
-------------------
-
 ## Bloque 4: Entendiendo el código a fondo
 
 1. Para que una `SLList` no se rompa, el `head` marca donde empiezas, el `tail` te da un atajo al final y `n` lleva la cuenta para no estar contando nodos cada vez.
@@ -60,8 +58,6 @@
 11. `spread()` y `gather()` son los que mantienen el equilibrio. Si un bloque se llena, repartes los datos; si varios están casi vacíos, los juntas para no desperdiciar espacio.
 12. El valor de `b` (el tamaño del bloque) es lo que decide si la lista se parece más a un arreglo rápido para leer o a una lista fácil de editar.
 
-----------------------
-
 ## Bloque 6: El refuerzo de Deng y el puente de integración
 
 1. La `DengList` nos da funciones que no solemos ver en una lista básica, como ordenamiento estable o limpieza de duplicados en una sola línea.
@@ -71,8 +67,6 @@
 5. `dedup_with_deng` limpia la lista de elementos repetidos. Es mucho más eficiente hacerlo así que intentar buscar duplicados a mano con dos bucles.
 6. El ejemplo de `reverse_with_deng` deja claro que no importa cómo guardes los datos por debajo, si tienes una interfaz común, el algoritmo para invertir sirve igual.
 7. Mover los datos entre estructuras cuesta O(n), pero te lo ahorras en tiempo de desarrollo y en evitar errores si la operación que vas a hacer es compleja.
-
------------------------
 
 ## Bloque 8: Conclusiones para la sustentación
 
